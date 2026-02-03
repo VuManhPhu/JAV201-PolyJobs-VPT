@@ -35,4 +35,16 @@ public class JobDAOImpl extends AbstractDAO<Job, String> implements JobDAO {
 			em.close();
 		}
 	}
+	
+	@Override
+	public List<Object[]> getJobStatistics() {
+	    EntityManager em = XJPA.getEntityManager();
+	    try {
+	        String jpql = "SELECT r.job.title, COUNT(r), MIN(r.appliedDate), MAX(r.appliedDate) " +
+	                      "FROM Application r GROUP BY r.job.title";
+	        return em.createQuery(jpql, Object[].class).getResultList();
+	    } finally {
+	        em.close();
+	    }
+	}
 }
