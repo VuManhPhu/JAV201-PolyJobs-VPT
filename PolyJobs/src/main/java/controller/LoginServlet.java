@@ -21,36 +21,27 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/common/login.jsp").forward(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 1. Lấy thông tin từ form
 		String id = req.getParameter("username");
 		String pass = req.getParameter("password");
-
-		// 2. Gọi DAO để kiểm tra
 		UserDAO dao = new UserDAOImpl();
 		User user = dao.checkLogin(id, pass);
-
-		// 3. Xử lý kết quả
 		if (user != null) {
-			// Đăng nhập thành công -> Lưu vào Session
 			HttpSession session = req.getSession();
 			session.setAttribute("user", user);
-
-			// Nếu là Admin thì chuyển sang trang quản trị, User thì về trang chủ
 			if (user.getAdmin()) {
-				resp.sendRedirect("admin/jobs"); // Cần tạo servlet này sau
+				resp.sendRedirect("admin/jobs");
 			} else {
-				resp.sendRedirect("home"); // Cần tạo servlet này sau
+				resp.sendRedirect("home");
 			}
 		} else {
-			// Đăng nhập thất bại -> Báo lỗi và quay lại trang login
 			req.setAttribute("message", "Sai tên đăng nhập hoặc mật khẩu!");
 			req.setAttribute("username", id); // Giữ lại tên user để đỡ phải nhập lại
-			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("/common/login.jsp").forward(req, resp);
 		}
 	}
 }

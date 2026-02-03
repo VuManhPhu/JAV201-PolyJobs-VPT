@@ -9,7 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "Applications", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"UserId", "JobId"}) // Đảm bảo 1 người ko nộp 2 lần 1 job
+    @UniqueConstraint(columnNames = {"UserId", "JobId"}) // Tránh ứng tuyển 2 lần 1 job
 })
 
 public class Application {

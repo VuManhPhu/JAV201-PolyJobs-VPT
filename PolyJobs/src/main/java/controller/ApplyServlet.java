@@ -1,20 +1,19 @@
 package controller;
 
+import dao.ApplicationDAO;
+import dao.ApplicationDAOImpl;
+import dao.JobDAO;
+import dao.JobDAOImpl;
+import entity.Application;
+import entity.Job;
+import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.util.Date;
-
-import dao.AbstractDAO;
-import dao.GenericDAO;
-import entity.Application;
-import entity.Job;
-import entity.User;
 
 @WebServlet("/apply")
 public class ApplyServlet extends HttpServlet {
@@ -26,55 +25,43 @@ public class ApplyServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 1. Kiểm tra đăng nhập
-		HttpSession session = req.getSession();
-		User user = (User) session.getAttribute("user");
+		User user = (User) req.getSession().getAttribute("user");
 
+		// bắt buộc login trước
 		if (user == null) {
-			// Chưa đăng nhập thì bắt đi Login
 			resp.sendRedirect("login");
 			return;
 		}
 
-		// 2. Lấy Job ID từ tham số
 		String jobId = req.getParameter("jobId");
+		JobDAO jobDao = new JobDAOImpl();
+		ApplicationDAO appDao = new ApplicationDAOImpl();
 
 		try {
-			// 3. Khởi tạo các DAO cần thiết
-			GenericDAO<Job, String> jobDao = new AbstractDAO<Job, String>(Job.class) {
-			};
-			GenericDAO<Application, Long> appDao = new AbstractDAO<Application, Long>(Application.class) {
-			};
-
-			// 4. Tìm Job tương ứng
-			Job job = jobDao.findById(jobId);
-
-			if (job != null) {
-				// 5. Tạo đối tượng Application mới
-				Application app = new Application();
-				app.setUser(user);
-				app.setJob(job);
-				app.setAppliedDate(new Date());
-				app.setStatus(0); // 0: Chờ duyệt (Như logic thực tế mình đã bàn)
-
-				// 6. Lưu vào Database
-				appDao.create(app);
-
-				req.setAttribute("message", "Ứng tuyển thành công việc làm: " + job.getTitle());
+			// kiểm tra xem đã ứng tuyển chưa?
+			if(appDao.isApplied(user.getId(), jobId)) {
+				req.setAttribute("error", "Bạn đã ứng tuyển công việc này rồi!");
+			} else {
+				Job job = jobDao.findById(jobId);
+				if (job != null) {
+					Application app = new Application();
+					app.setUser(user);
+					app.setJob(job);
+					app.setAppliedDate(new Date());
+					app.setStatus(0); // chờ duyệt
+					appDao.create(app);
+					req.setAttribute("message", "Ứng tuyển thành công!");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			req.setAttribute("error", "Có lỗi xảy ra, vui lòng thử lại!");
+			req.setAttribute("error", "Lỗi hệ thống: " + e.getMessage());
 		}
 
-		// 7. Quay về trang chủ để xem tiếp
 		req.getRequestDispatcher("/home").forward(req, resp);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
 	}
-
 }

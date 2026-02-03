@@ -36,7 +36,7 @@ public abstract class AbstractDAO<T, K> implements GenericDAO<T, K> {
         EntityTransaction trans = em.getTransaction();
         try {
             trans.begin();
-            em.merge(entity); // Hàm merge dùng để update
+            em.merge(entity); //update
             trans.commit();
             return entity;
         } catch (Exception e) {
