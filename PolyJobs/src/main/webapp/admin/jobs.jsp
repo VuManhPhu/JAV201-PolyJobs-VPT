@@ -5,116 +5,150 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý Việc làm - Admin</title>
+    <title>Quản lý Việc làm - VPT Jobs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/common/admin.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-dark bg-primary mb-4 p-3">
+    <jsp:include page="/admin/sidebar.jsp" />
+
+    <div class="main-content">
         <div class="container-fluid">
-            <span class="navbar-brand fw-bold">ADMINISTRATION</span>
-            <div class="d-flex">
-                <a href="${pageContext.request.contextPath}/home" class="btn btn-light btn-sm me-2">Xem trang chủ</a>
-                <a href="${pageContext.request.contextPath}/logout" class="btn btn-warning btn-sm">Đăng xuất</a>
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-dark">Quản lý Tin tuyển dụng</h4>
+                <a href="${pageContext.request.contextPath}/home" class="btn btn-light border shadow-sm">
+                    <i class="bi bi-box-arrow-up-right"></i> Xem trang web
+                </a>
             </div>
-        </div>
-    </nav>
 
-    <div class="container-fluid">
-        
-        <c:if test="${not empty message}">
-            <div class="alert alert-info text-center">${message}</div>
-        </c:if>
+            <c:if test="${not empty message}">
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </c:if>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white fw-bold">Thông tin Việc làm</div>
-                    <div class="card-body">
-                        <form action="${pageContext.request.contextPath}/admin/job" method="post">
-                            
-                            <div class="mb-3">
-                                <label>Mã công việc (ID)</label>
-                                <input type="text" name="id" class="form-control" value="${job.id}" placeholder="VD: JOB99" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Tên công việc</label>
-                                <input type="text" name="title" class="form-control" value="${job.title}" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Mức lương ($)</label>
-                                <input type="number" name="salary" class="form-control" value="${job.salary}">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Link Ảnh (Poster)</label>
-                                <input type="text" name="poster" class="form-control" value="${job.poster}">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Mô tả chi tiết</label>
-                                <textarea name="description" class="form-control" rows="3">${job.description}</textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Trạng thái</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="active" value="true" ${job.active ? 'checked' : ''} checked>
-                                    <label class="form-check-label">Đang tuyển</label>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card card-dashboard h-100">
+                        <div class="card-header-pro">
+                            <span><i class="bi bi-pencil-square text-primary"></i> Thông tin Job</span>
+                            <a href="${pageContext.request.contextPath}/admin/job/reset" class="btn btn-sm btn-light border">Làm mới</a>
+                        </div>
+                        <div class="card-body">
+                            <form action="${pageContext.request.contextPath}/admin/job" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold small">Mã công việc (ID)</label>
+                                    <input type="text" name="id" class="form-control" value="${job.id}" placeholder="VD: JOB01" required>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="active" value="false" ${!job.active ? 'checked' : ''}>
-                                    <label class="form-check-label">Đã đóng</label>
-                                </div>
-                            </div>
 
-                            <hr>
-                            <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/create" class="btn btn-primary">Create</button>
-                            <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/update" class="btn btn-warning">Update</button>
-                            <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/delete" class="btn btn-danger">Delete</button>
-                            <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/reset" class="btn btn-secondary">Reset</button>
-                        </form>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold small">Tiêu đề tuyển dụng</label>
+                                    <input type="text" name="title" class="form-control" value="${job.title}" required>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label text-muted fw-bold small">Mức lương ($)</label>
+                                        <input type="number" name="salary" class="form-control" value="${job.salary}">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label text-muted fw-bold small">Trạng thái</label>
+                                        <select name="active" class="form-select">
+                                            <option value="true" ${job.active ? 'selected' : ''}>Đang tuyển</option>
+                                            <option value="false" ${!job.active ? 'selected' : ''}>Đã đóng</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold small">Poster (Link ảnh)</label>
+                                    <input type="text" name="poster" class="form-control" value="${job.poster}" placeholder="https://...">
+                                    <c:if test="${not empty job.poster}">
+                                        <img src="${job.poster}" class="mt-2 rounded border" style="height: 60px;">
+                                    </c:if>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold small">Mô tả chi tiết</label>
+                                    <textarea name="description" class="form-control" rows="4">${job.description}</textarea>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/create" class="btn btn-primary fw-bold"><i class="bi bi-plus-lg"></i> Thêm mới</button>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/update" class="btn btn-warning w-100 fw-bold text-white"><i class="bi bi-save"></i> Cập nhật</button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button type="submit" formaction="${pageContext.request.contextPath}/admin/job/delete" class="btn btn-danger w-100 fw-bold"><i class="bi bi-trash"></i> Xóa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white fw-bold">Danh sách Việc làm</div>
-                    <div class="card-body p-0">
-                        <table class="table table-hover table-bordered mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên việc làm</th>
-                                    <th>Lương</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="item" items="${jobs}">
-                                    <tr>
-                                        <td>${item.id}</td>
-                                        <td>${item.title}</td>
-                                        <td>$${item.salary}</td>
-                                        <td>
-                                            ${item.active ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Closed</span>'}
-                                        </td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/admin/job/edit?id=${item.id}" class="btn btn-info btn-sm">Edit</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
+                <div class="col-lg-8">
+                    <div class="card card-dashboard h-100">
+                        <div class="card-header-pro">
+                            <span><i class="bi bi-list-ul text-primary"></i> Danh sách việc làm</span>
+                            <span class="badge bg-primary rounded-pill">${jobs.size()} Jobs</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-pro table-hover align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="ps-3">Job Title</th>
+                                            <th>Lương</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="item" items="${jobs}">
+                                            <tr>
+                                                <td class="ps-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="${item.poster}" class="rounded border me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                                        <div>
+                                                            <div class="fw-bold text-dark">${item.title}</div>
+                                                            <small class="text-muted">ID: ${item.id}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="fw-bold text-success">$${item.salary}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${item.active}">
+                                                            <span class="badge bg-success bg-opacity-10 text-success border border-success px-2 py-1">Active</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary px-2 py-1">Closed</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <a href="${pageContext.request.contextPath}/admin/job/edit?id=${item.id}" class="btn btn-sm btn-outline-primary border-0 rounded-circle shadow-sm" title="Sửa">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

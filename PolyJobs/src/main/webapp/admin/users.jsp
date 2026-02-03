@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>Quản lý Người dùng - Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/common/guest.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 

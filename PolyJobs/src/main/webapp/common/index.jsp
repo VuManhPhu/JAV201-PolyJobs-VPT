@@ -15,7 +15,7 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h2 class="fw-bold">Công nghệ chạm đỉnh - Sự nghiệp thăng hoa</h2>
-                    <p class="lead">Hơn 1,000+ việc làm IT đang chờ đón bạn tại VPT Jobs.</p>
+                    <p class="lead">Hơn 1,000+ việc làm đang chờ đón bạn tại VPT Jobs.</p>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="https://vieclam24h.vn/img/img-home-app.png" alt="Banner" style="max-height: 150px; opacity: 0.9;">
