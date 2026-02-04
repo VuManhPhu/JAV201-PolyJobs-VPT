@@ -1,0 +1,102 @@
+/* Màu chủ đạo: Xanh lá giống Vieclam24h */
+:root {
+    --primary-color: #00b14f; /* Xanh lá */
+    --hover-color: #009643;
+    --bg-light: #f4f5f7;
+    --text-dark: #333;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+}
+
+/* Navbar xịn sò */
+.navbar {
+    background-color: #fff !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    padding: 0.8rem 1rem;
+}
+
+.navbar-brand {
+    color: var(--primary-color) !important;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+.nav-link {
+    color: #555 !important;
+    font-weight: 500;
+    margin-left: 15px;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Button theo style Vieclam24h */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Job Card (Thẻ việc làm) */
+.job-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.job-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 177, 79, 0.15);
+    transform: translateY(-2px);
+}
+
+.job-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+    text-decoration: none;
+}
+
+.job-title:hover {
+    color: var(--primary-color);
+}
+
+.salary-text {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Footer */
+footer {
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    padding: 20px 0;
+    margin-top: 40px;
+    color: #666;
+}
